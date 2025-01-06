@@ -23,7 +23,7 @@ for (index, row) in df.iterrows():
         year = str(row['Date'])[:4]
         month = str(row['Date'])[5:7]
     else:
-        year = str(row['Date'])[-3:]
+        year = str(row['Date'])[-4:]
         if(str(row['Date'])[2] == "-"):
             month = months[str(row['Date'])[3:6]]
         else:
@@ -32,8 +32,9 @@ for (index, row) in df.iterrows():
     if(int(year) != start_year):
         add["Date"] = [str(i) + "/" + str(start_year) for i in range(start_month,13)]
         add["Policy rate"] = [row["Policy Rate"] for i in range(start_month,13)]
-        print(add)
+        #print(add)
         start_year = int(year)
+        start_month = 1
         new = pd.concat([new, add])
         add = pd.DataFrame({
             "Date": [],
@@ -42,7 +43,7 @@ for (index, row) in df.iterrows():
     if int(month) != start_month:
         add["Date"] = [str(i) + "/" + year for i in range(start_month, int(month))]
         add["Policy rate"] = [row["Policy Rate"] for i in range(start_month, int(month))]
-        print(add)
+        # print(add)
         start_month = int(month)
         new = pd.concat([new, add])
         add = pd.DataFrame({
@@ -53,4 +54,4 @@ for (index, row) in df.iterrows():
 with pd.ExcelWriter("Data Cleaning/TableMPC_2567_6_cleaned.xlsx") as writer:
     new.to_excel(writer, sheet_name='Sheet1', index=False)
 
-print(new)
+#print(new)
